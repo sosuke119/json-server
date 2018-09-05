@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="create">
+        <input type="text" placeholder="name">
+        <a href="#">Create</a>
+    </div>
+
+    <div id="delete">
+        <input type="text" placeholder="id">
+        <a href="#">Delete</a>
+    </div>
+
+    <div id="update">
+        <input type="text" placeholder="id" name="id">
+        <input type="text" placeholder="name" name="name">
+        <a href="#">Update</a>
+    </div>
+
+
+    <ul id="users"></ul>
+    
+    <script>
+        $(function () {
+
+
+
+            $.ajax({
+                url: 'http://localhost:3000/users',
+                method: 'get',
+                dataType: 'json',
+                data: {}
+            }).done(function (res) {
+                console.log(res)
+                $('#users').empty()
+                res.forEach(function (user) {
+                    $('#users').append('<li>' + user.id + ':  ' + user.name + '</li>')
+                })
+            }).fail(function (err) {
+                console.log(err)
+            })
+
+
+
+
+            // btn-create  新增在這裡做
+            $('#create > a').on('click', function () {
+                let name = $('#create > input').val().trim()
+                if (!name) return false;
+                $.ajax({
+                    url: 'http://localhost:3000/users',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        name: name
+                    }
+                })
+            })
+
+
+
+            // btn-delete  刪除在這裡做
+            $('#delete > a').on('click', function () {
+                let id = $('#delete > input').val().trim()
+                if (!id) return false;
+                $.ajax({
+                    url: 'http://localhost:3000/users/' + id,
+                    method: 'delete',
+                    dataType: 'json'
+                })
+            })
+
+
+
+
+            // btn-update  更改在這裡做
+            $('#update > a').on('click', function () {
+
+                let id = $('#update > input[name=id]').val().trim()
+                if (!id) return false;
+
+                let name = $('#update > input[name=name]').val().trim()
+                if (!name) return false;
+
+                $.ajax({
+                    url: 'http://localhost:3000/users/' + id,
+                    method: 'put',
+                    dataType: 'json',
+                    data: {
+                        name: name
+                    }
+                })
+            })
+
+
+        })
+    </script>
+
+</body>
+</html>
