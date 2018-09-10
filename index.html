@@ -2,11 +2,14 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+
     <title>Document</title>
 </head>
 
@@ -16,6 +19,13 @@
         <input type="text" placeholder="name">
         <a href="#">Create</a>
     </div>
+
+
+
+
+
+
+
 
     <div id="delete">
         <input type="text" placeholder="id">
@@ -33,43 +43,102 @@
     
     <script>
         $(function () {
-
-
+            var $url_of_api = 'http://137.117.69.170/api/users/get_account_info/'      // get
+            
+                              'http://137.117.69.170/api/users/set_account_info/'  // post
 
             $.ajax({
-                url: 'http://localhost:3000/users',
+                url: 'http://137.117.69.170/api/users/get_account_info/',
                 method: 'get',
                 dataType: 'json',
                 data: {}
             }).done(function (res) {
                 console.log(res)
                 $('#users').empty()
-                res.forEach(function (user) {
-                    $('#users').append('<li>' + user.id + ':  ' + user.name + '</li>')
-                })
+
+                $('#users').append('<li>' + res.Account + '   ' +res.Name + '</li>');
             }).fail(function (err) {
                 console.log(err)
             })
 
-
-
-
+            
             // btn-create  新增在這裡做
             $('#create > a').on('click', function () {
-                let name = $('#create > input').val().trim()
-                if (!name) return false;
-                $.ajax({
-                    url: 'http://localhost:3000/users',
-                    method: 'post',
-                    dataType: 'json',
-                    data: {
-                        name: name
-                    }
-                })
+
+
+                // $.ajax({
+                //     url: 'http://137.117.69.170/api/users/set_account_info/',
+                //     type: 'POST',
+                //     contentType: 'application/json',
+                //     data: '{"Account":"' + $('#create').val() + '"}'
+                // }).done(function() {
+                //     alert('success')
+                //     console.log('Done!');
+                // });
+
+
+
+
+
+
+                txt=$('#create > input').val().trim();
+                $.post("http://137.117.69.170/api/users/set_account_info/",{suggest:txt},function(res){
+                    $("span").html(res);
+                });
+            
+                // $.post("http://137.117.69.170/api/users/set_account_info/",
+                // {
+                //   Account:"Donald Duck",
+                //   Name:"Duckburg"
+                // },
+                // function(data,status){
+                //   alert("数据：" + data + "\n状态：" + status);
+                // });
+
+                $.post("http://137.117.69.170/api/users/set_account_info/",
+                {
+                name:"Donald Duck",
+                city:"Duckburg"
+                },
+                function(data,status){
+                alert("数据：" + data + "\n状态：" + status);
+                });
+
+
+
+
+                // let name = $('#create > input').val().trim()
+                // if (!name) return false;
+                // $.ajax({
+                //     url: 'http://137.117.69.170/api/users/set_account_info/',
+                //     method: 'post',
+                //     dataType: 'json',
+                //     // data: name
+                // }).done(function (name) {
+                //     console.log(name)
+                //     alert('success')
+                //     $('#users').empty()
+                // }).fail(function (err) {
+                //     console.log(err)
+                //     alert('error')
+                // })
+                // let account = {"Account":"1111"}
+                // $.ajax({
+                //     type: 'POST',
+                //     url: 'http://137.117.69.170/api/users/set_account_info/',
+                //     data: account,
+                //     dataType: 'json'
+                    
+                // }).done(function (name) {
+                //     console.log(name)
+                //     alert('success')
+                //     $('#users').empty()
+
+                // }).fail(function (err) {
+                //     console.log(err)
+                //     alert('error')
+                // })
             })
-
-
-
             // btn-delete  刪除在這裡做
             $('#delete > a').on('click', function () {
                 let id = $('#delete > input').val().trim()
@@ -80,19 +149,12 @@
                     dataType: 'json'
                 })
             })
-
-
-
-
             // btn-update  更改在這裡做
             $('#update > a').on('click', function () {
-
                 let id = $('#update > input[name=id]').val().trim()
                 if (!id) return false;
-
                 let name = $('#update > input[name=name]').val().trim()
                 if (!name) return false;
-
                 $.ajax({
                     url: 'http://localhost:3000/users/' + id,
                     method: 'put',
@@ -102,8 +164,29 @@
                     }
                 })
             })
-
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                              // $.ajax({
+            //     url: 'http://137.117.69.170/api/users/account_info/',
+            //     type: 'GET',
+            //     dataType: 'json',
+            //     cache: false,
+            //     success: function(res){
+            //         console.log(res)
+            //     }
+            // })
         })
     </script>
 
