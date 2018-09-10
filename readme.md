@@ -12,7 +12,7 @@
 
 等待Benny提供一個可以Create Read Update Delete的API 做串接。
 
-#使用方法
+# 使用方法
 
 使用 `json-server --watch data.json` json-server run起來，
 這樣才可以讓`index.html` CRUD`data.json`
